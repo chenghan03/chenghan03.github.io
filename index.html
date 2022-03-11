@@ -162,7 +162,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/11/luck-guy-1/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/11/luckguy/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/Blog/images/avatar.png">
@@ -176,7 +176,7 @@
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
           
-            <a href="/Blog/2022/03/11/luck-guy-1/" class="post-title-link" itemprop="url">luck_guy</a>
+            <a href="/Blog/2022/03/11/luckguy/" class="post-title-link" itemprop="url">luckguy</a>
         </h2>
 
         <div class="post-meta">
@@ -187,7 +187,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2022-03-11 20:48:31 / 修改时间：20:54:19" itemprop="dateCreated datePublished" datetime="2022-03-11T20:48:31+08:00">2022-03-11</time>
+              <time title="创建时间：2022-03-11 20:58:15 / 修改时间：21:01:25" itemprop="dateCreated datePublished" datetime="2022-03-11T20:58:15+08:00">2022-03-11</time>
             </span>
 
           
@@ -202,19 +202,19 @@
 
       
           <p>首先用exeinfope查壳，但没什么结果，所以我尝试先直接用64位ida pro打开，然后直接找到主函数</p>
-<p><img src="D:\Desktop\21级网工一班谭程翰\1.jpg"></p>
+<p><img src="D:\Desktop\chenghan\1.jpg"></p>
 <p>还是没什么发现，于是就shift+F12看查看字符串，看到一个疑似flag的字符串</p>
-<p><img src="D:\Desktop\21级网工一班谭程翰\2.jpg"></p>
+<p><img src="D:\Desktop\chenghan\2.jpg"></p>
 <p>双击点进去，ctrl+x跟进一下，F5查看函数</p>
-<p><img src="D:\Desktop\21级网工一班谭程翰\3.jpg"></p>
+<p><img src="D:\Desktop\chenghan\3.jpg"></p>
 <p>在case1中看到flag是s和f1、f2拼接，可以知道flag的前一部分是GXY{do_not_</p>
-<p><img src="D:\Desktop\21级网工一班谭程翰\4.jpg"></p>
+<p><img src="D:\Desktop\chenghan\4.jpg"></p>
 <p>往后看，在case4中又发现得到的前部分还要和s拼接，所以剩下的就只要求出后一部分flag就可以了</p>
-<p><img src="D:\Desktop\21级网工一班谭程翰\5.jpg"></p>
+<p><img src="D:\Desktop\chenghan\5.jpg"></p>
 <p>不难看出，在case5中要将s进行一系列计算，s正好可以分为一个八位的16进制数，只要将这8位16进制数进行以下计算就行了，用python写个脚本即可得出（要注意要将得到的字符串反向）</p>
-<p><img src="D:\Desktop\21级网工一班谭程翰\6.jpg"></p>
+<p><img src="D:\Desktop\chenghan\6.jpg"></p>
 <p>得到后一部分flag</p>
-<p><img src="D:\Desktop\21级网工一班谭程翰\7.jpg"></p>
+<p><img src="D:\Desktop\chenghan\7.jpg"></p>
 <p>拼接得到最终的flag： GXY{do_not_hate_me}</p>
 
       
