@@ -162,6 +162,87 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/12/pyre/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="阿翰">
+      <meta itemprop="description" content="欢迎来到阿翰的博客（要努力呀少年！）">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ChengHan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/12/pyre/" class="post-title-link" itemprop="url">pyre</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-03-12 13:22:33 / 修改时间：13:32:50" itemprop="dateCreated datePublished" datetime="2022-03-12T13:22:33+08:00">2022-03-12</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/reverse-py/" itemprop="url" rel="index"><span itemprop="name">reverse.py</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>拿到题目后发现这是一个pyc文件，是一道python逆向题，拿到在线反编译器中反编译一下，可以得到以下代码：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">print &quot;Welcome to Re World!&quot;</span><br><span class="line">print &quot;Your input1 is your flag~&quot;</span><br><span class="line">l = len(input1)</span><br><span class="line">for i in range(l):</span><br><span class="line">    num = ((input1[i] + i) % 128 + 128) % 128</span><br><span class="line">    code += num</span><br><span class="line">for i in range(l - 1):</span><br><span class="line">    code[i] = code[i] ^ code[i + 1]</span><br><span class="line">print code</span><br><span class="line">code = [</span><br><span class="line">    &quot;\x1f&quot;,</span><br><span class="line">    &quot;\x12&quot;,</span><br><span class="line">    &quot;\x1d&quot;,</span><br><span class="line">    &quot;(&quot;,</span><br><span class="line">    &quot;0&quot;,</span><br><span class="line">    &quot;4&quot;,</span><br><span class="line">    &quot;\x01&quot;,</span><br><span class="line">    &quot;\x06&quot;,</span><br><span class="line">    &quot;\x14&quot;,</span><br><span class="line">    &quot;4&quot;,</span><br><span class="line">    &quot;,&quot;,</span><br><span class="line">    &quot;\x1b&quot;,</span><br><span class="line">    &quot;U&quot;,</span><br><span class="line">    &quot;?&quot;,</span><br><span class="line">    &quot;o&quot;,</span><br><span class="line">    &quot;6&quot;,</span><br><span class="line">    &quot;*&quot;,</span><br><span class="line">    &quot;:&quot;,</span><br><span class="line">    &quot;\x01&quot;,</span><br><span class="line">    &quot;D&quot;,</span><br><span class="line">    &quot;;&quot;,</span><br><span class="line">    &quot;%&quot;,</span><br><span class="line">    &quot;\x13&quot;,</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+<p>我们只要逐步反向写脚本就可以得到flag，不过我在写脚本的时候想了很久，一直都没搞出来</p>
+<p>首先是这一部分：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">for i in range(l - 1):</span><br><span class="line">    code[i] = code[i] ^ code[i + 1]</span><br></pre></td></tr></table></figure>
+
+<p>这行代码的意思是将code从第一位开始，和后一位进行异或运算，一直到倒数第二位，那我们要还原这一步的话我们就要反过来抑或，就是这里我卡了很久，不知道怎么解决，知道看到大佬的wp，发现可以这样：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">for i in range(l-2, -1, -1):</span><br><span class="line">    code[i] = chr(ord(code[i]) ^ ord(code[i + 1]))</span><br></pre></td></tr></table></figure>
+
+<p>后面那步还比较好理解，把式子化简以下就可以，最后完整的脚本如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">code = [&#x27;\x1f&#x27;, &#x27;\x12&#x27;, &#x27;\x1d&#x27;, &#x27;(&#x27;, &#x27;0&#x27;, &#x27;4&#x27;, &#x27;\x01&#x27;, &#x27;\x06&#x27;, &#x27;\x14&#x27;, &#x27;4&#x27;, &#x27;,&#x27;,</span><br><span class="line">        &#x27;\x1b&#x27;,&#x27;U&#x27;, &#x27;?&#x27;, &#x27;o&#x27;, &#x27;6&#x27;, &#x27;*&#x27;, &#x27;:&#x27;, &#x27;\x01&#x27;, &#x27;D&#x27;, &#x27;;&#x27;, &#x27;%&#x27;, &#x27;\x13&#x27;]</span><br><span class="line">flag = &#x27;&#x27;</span><br><span class="line">l = len(code)</span><br><span class="line">for i in range(l-2, -1, -1):</span><br><span class="line">    code[i] = chr(ord(code[i]) ^ ord(code[i + 1]))</span><br><span class="line"></span><br><span class="line">for i in range(0, len(code)):</span><br><span class="line">    flag += chr((ord(code[i]) - i) % 128)</span><br><span class="line">print(flag)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>flag：GWHT{Just_Re_1s_Ha66y!}</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/11/luckguy/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -185,17 +266,23 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2022-03-11 20:58:15 / 修改时间：23:00:19" itemprop="dateCreated datePublished" datetime="2022-03-11T20:58:15+08:00">2022-03-11</time>
+              <time title="创建时间：2022-03-11 20:58:15" itemprop="dateCreated datePublished" datetime="2022-03-11T20:58:15+08:00">2022-03-11</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-03-12 13:24:01" itemprop="dateModified" datetime="2022-03-12T13:24:01+08:00">2022-03-12</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/reverse/" itemprop="url" rel="index"><span itemprop="name">reverse</span></a>
+                  <a href="/categories/reverse-exe/" itemprop="url" rel="index"><span itemprop="name">reverse.exe</span></a>
                 </span>
             </span>
 
@@ -315,14 +402,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">1</span>
+          <span class="site-state-item-count">2</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
