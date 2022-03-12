@@ -162,6 +162,85 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/12/JustRE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="阿翰">
+      <meta itemprop="description" content="欢迎来到阿翰的博客（要努力呀少年！）">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ChengHan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/12/JustRE/" class="post-title-link" itemprop="url">JustRE</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-03-12 13:46:09 / 修改时间：13:56:10" itemprop="dateCreated datePublished" datetime="2022-03-12T13:46:09+08:00">2022-03-12</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/reverse-exe/" itemprop="url" rel="index"><span itemprop="name">reverse.exe</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>还是照例用exeinfope打开，发现是32位程序，那么我们直接用32位IDA PRO打开即可，ctrl+f查找main函数F5看伪代码发现没啥东西，于是shift+F12查看字符串，拉到最底下的时候发现一个flag（熟悉的配方）</p>
+<img src="/2022/03/12/JustRE/1.jpg" class>
+
+<p>ctrl+x跟进以下查看函数</p>
+<img src="/2022/03/12/JustRE/2.jpg" class>
+
+<p>我们注意以下这一行</p>
+<img src="/2022/03/12/JustRE/3.jpg" class>
+
+<p>一开始我还懵了半天，后面过了一会再看，咦，这不就是c语言的printf函数吗哈哈哈哈，所以只要把19999和0代替两个%d就可以了，over</p>
+<p>flag：BJD{1999902069a45792d233ac}</p>
+<p>题目来源：<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges">BUUCTF在线评测 (buuoj.cn)</a>–JustRE</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/12/pyre/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -404,7 +483,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-count">3</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
