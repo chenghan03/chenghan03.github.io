@@ -162,6 +162,126 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/12/CrackRTF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="阿翰">
+      <meta itemprop="description" content="欢迎来到阿翰的博客（要努力呀少年！）">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ChengHan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/12/CrackRTF/" class="post-title-link" itemprop="url">CrackRTF</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-03-12 17:17:49 / 修改时间：18:54:44" itemprop="dateCreated datePublished" datetime="2022-03-12T17:17:49+08:00">2022-03-12</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/reverse-exe/" itemprop="url" rel="index"><span itemprop="name">reverse.exe</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p><strong>首先我想说，这道题对于我这个小白来说简直是难出天际，还是看了好多大佬的wp才能勉强做出来，中间仍然有一些没理解的地方</strong></p>
+<p>首先照例拿到exeinfope中查看，是32位程序，拿到IDA PRO中查找主函数，主函数如下：</p>
+<img src="/2022/03/12/CrackRTF/1.jpg" class>
+
+<p>真的好长，我看了好久吧久才看懂它的大概思路</p>
+<img src="/2022/03/12/CrackRTF/2.jpg" class>
+
+<p>看着一部分，我们可以知道，它这个密码是6位数，而且大于100000</p>
+<p>关键来了，这个六位数我们要把它和**@DBApp<strong>拼接，然后放到sub_40100A这个函数中进行计算，计算得出的结果要等于</strong>6E32D0943418C2C33385BC35A1470250DD8923A9**</p>
+<p><strong>在这引申几个知识点：</strong></p>
+<ul>
+<li><strong>atoi</strong>函数的作用是将字符串转化为整型</li>
+<li><strong>strcmpi</strong>函数是将两个字符串进行对比，并且忽略大小写的影响，例如Yes和YES的输出结果仍为1，但在这里的<strong>strcmpi</strong>函数前有一个！，输出结果应该是0，按理来说不会运行下面的代码，这里有点没搞明白</li>
+</ul>
+<p>我们点开<strong>sub_40100A</strong>函数：</p>
+<img src="/2022/03/12/CrackRTF/3.jpg" class>
+
+<p>看见了很多新的东西，我就是从这里开始崩溃的……</p>
+<p>但是不能慌，我们可以上网查，但是上网查了之后也没怎么懂，看了大佬的wp之后才理解，这是一个哈希加密，然后一般的范围是小于999999（这里我没太明白，我也没理解这个范围是怎么求的），所以我们可以在这个范围里面进行爆破解密，脚本如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line">str1 = <span class="string">&#x27;@DBApp&#x27;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">100000</span>, <span class="number">999999</span>):</span><br><span class="line">    psw = <span class="built_in">str</span>(i)+str1</span><br><span class="line">    x = hashlib.sha1(psw.encode(<span class="string">&quot;utf8&quot;</span>))</span><br><span class="line">    y = x.hexdigest()</span><br><span class="line">    <span class="keyword">if</span> <span class="string">&quot;6e32d0943418c2c33385bc35a1470250dd8923a9&quot;</span> == y:</span><br><span class="line">        <span class="built_in">print</span>(psw)</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>补充：</p>
+<ul>
+<li>encode是编码，后面的括号内是其编码的格式，这里就是将得到的psw编码为utf8格式</li>
+<li><strong>x.hexdigest()<strong>是将y转换成16进制格式进而与</strong>6e32d0943418c2c33385bc35a1470250dd8923a9</strong>进行计算，如果去掉hex就是十进制</li>
+</ul>
+<p>爆破后得到<strong>123321@DBApp</strong>，密码就是前六位也就是<strong>123321</strong>（说实话做到这我人已经懵了，光是我自己我基本做不出来，虽然脚本是自己写的，但思路都是参照大佬的wp来的）</p>
+<p>第一个密码终于解出来了，现在要解第二个密码</p>
+<img src="/2022/03/12/CrackRTF/4.jpg" class>
+
+<p>其实这个<strong>sub_401019</strong>函数和第一个差不多，但是我们没有范围，所以不能爆破，只能跳过了</p>
+<p>但是不要灰心，“亲爱的”出题人在后面又给了我们两个函数噢！</p>
+<p>我们点开<strong>sub_40100F</strong>这个函数进去，会发现又有一大堆新的东西！！完全看不懂是什么</p>
+<img src="/2022/03/12/CrackRTF/5.jpg" class>
+
+<p>在百度查了一下<strong>FindResourceA</strong>这个函数，我看不太懂，我就直接移植大佬的解释吧</p>
+<img src="/2022/03/12/CrackRTF/6.jpg" class>
+
+<p>呃，其实还是不太理解哈哈哈哈</p>
+<p>现在我们看到sub_401005这个函数</p>
+<img src="/2022/03/12/CrackRTF/7.jpg" class>
+
+<p>上面<strong>FindResourceA</strong>函数传递的值会传到这里，进行抑或运算，在这里我们需要用到一个叫做<strong>Resourse Hacker</strong>的软件来查看</p>
+<img src="/2022/03/12/CrackRTF/8.jpg" class>
+
+<p>框出来的数字就是我们要进行抑或运算的六位数字的一部分</p>
+<p>因为最后会生成一个**.rtf<strong>文件，而</strong>.rtf<strong>文件的标识符前六位是</strong>{\rtf1<strong>，所以我们就把</strong>0x05,0x7D,0x41,0x15,0x26,0x01<strong>和</strong>{\rtf1**进行抑或运算，写一个脚本进行计算</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="number">0x05</span>, <span class="number">0x7D</span>, <span class="number">0x41</span>, <span class="number">0x15</span>, <span class="number">0x26</span>, <span class="number">0x01</span>]</span><br><span class="line">b = <span class="string">&#x27;&#x27;</span></span><br><span class="line">c = <span class="string">&#x27;&#123;\\rtf1&#x27;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(a)):</span><br><span class="line">    b += <span class="built_in">chr</span>(<span class="built_in">ord</span>(c[i]) ^ a[i])</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(b)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>得到第二个密码为**~!3a@0**</p>
+<p>最后运行程序，输入两次密码，会生成一个**.rtf**文件在根目录</p>
+<p>点开即得到<strong>Flag{N0_M0re_Free_Bugs}</strong></p>
+<p>题目来源：<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges">BUUCTF在线评测 (buuoj.cn)</a>–CrackRTF</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/12/JustRE/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -483,7 +603,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
