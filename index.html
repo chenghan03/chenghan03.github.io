@@ -162,6 +162,87 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/14/Xor/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.png">
+      <meta itemprop="name" content="阿翰">
+      <meta itemprop="description" content="欢迎来到阿翰的博客（要努力呀少年！）">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="ChengHan's Blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/03/14/Xor/" class="post-title-link" itemprop="url">Xor</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2022-03-14 19:49:35 / 修改时间：20:00:48" itemprop="dateCreated datePublished" datetime="2022-03-14T19:49:35+08:00">2022-03-14</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/reverse-exe/" itemprop="url" rel="index"><span itemprop="name">reverse.exe</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <p>查壳后发现无壳且是32位程序，所以我们直接用32位IDA PRO打开即可，还是一样找主函数，但是当我F5反汇编的之后却发现无法反汇编</p>
+<img src="/2022/03/14/Xor/1.jpg" class>
+
+<p>在这里我卡住了，于是我上网查了一下别的大佬写的wp</p>
+<img src="/2022/03/14/Xor/2.jpg" class>
+
+<p>我们跟踪一下这个地址，跳到<strong>00401095</strong>这个地址之后，我们再按F5反汇编，然后再重新进入main函数，就可以反汇编了</p>
+<img src="/2022/03/14/Xor/3.jpg" class>
+
+<p>这下思路就很清晰了，逻辑很简单，就直接上脚本吧</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="string">&#x27;MSAWB~FXZ:J:`tQJ&quot;N@ bpdd&#125;8g&#x27;</span></span><br><span class="line">b = <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(a)):</span><br><span class="line">    b += <span class="built_in">chr</span> (i ^ <span class="built_in">ord</span>(a[i]))</span><br><span class="line"><span class="built_in">print</span>(b)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>得到flag：<strong>MRCTF{@_R3@1ly_E2_R3verse!}</strong></p>
+<p>题目来源：<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges">BUUCTF在线评测 (buuoj.cn)</a>–Xor</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/12/CrackRTF/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -603,7 +684,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-count">5</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
