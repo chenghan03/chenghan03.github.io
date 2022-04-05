@@ -1393,7 +1393,7 @@ input::placeholder {
   z-index: -999;
   width: 100%;
   height: 100%;
-  background: url(/img/bg.png);
+  background: url(/img/bg5.jpg);
   background-attachment: local;
   background-position: center;
   -webkit-background-size: cover;
@@ -3195,7 +3195,7 @@ h1.page-title + .tag-cloud-list {
   position: absolute;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.3);
+  background-color: rgba(0,0,0,0);
   content: '';
 }
 #page-header.full_page {
@@ -3291,7 +3291,7 @@ h1.page-title + .tag-cloud-list {
   }
 }
 #page-header.post-bg:before {
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0,0,0,0);
 }
 #page-header #post-info {
   position: absolute;
@@ -5629,4 +5629,13 @@ blockquote.pullquote.right {
     padding-bottom: 40px;
     max-height: 75vh !important;
   }
+}
+.recent-post-item {
+  background: rgba(255,255,255,0.8) !important;
+}
+.card-widget {
+  background: rgba(255,255,255,0.8) !important;
+}
+page {
+  background: rgba(255,255,255,0.8) !important;
 }
