@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>usualCrypt</title>
+      <link href="/2022/04/25/usualCrypt/"/>
+      <url>/2022/04/25/usualCrypt/</url>
+      
+        <content type="html"><![CDATA[<p>直接看到主函数</p><img src="/2022/04/25/usualCrypt/1.png" class><p>关键函数位17行的sub_401080，我们点进去看看</p><img src="/2022/04/25/usualCrypt/2.png" class><img src="/2022/04/25/usualCrypt/3.png" class><p>这个函数又可以分为三个部分，第一个部分是sub_401000函数，第三部分是sub_401030，第二部分就是这中间的部分，我是先点开了byte_40E0A0这个数组，点进去一看发现了base64的编码表，再回头看第二部分的加密，就可以确定这是base编码了</p><img src="/2022/04/25/usualCrypt/4.png" class><p>然后再看看第一部分的函数</p><img src="/2022/04/25/usualCrypt/5.png" class><p>发现这里对base64的编码表做了点手脚，把里面的位置调换了一下</p><p>在看第三部分sub_401030，这个函数将编码后的flag的大小写互换了一下</p><img src="/2022/04/25/usualCrypt/6.png" class><p>总结一下就是将flag用换了表的base64编码一下，然后再把大小写互换一下即可，然后我们再找一下密文，密文就是主函数中的byte_40E0E4也就是zMXHz3TIgnxLxJhFAdtZn2fFk3lYCrtPC2l9</p><p>先写一个大小写互换和得出新表的脚本吧</p><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="string">&#x27;zMXHz3TIgnxLxJhFAdtZn2fFk3lYCrtPC2l9&#x27;</span></span><br><span class="line">b = <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(a)):</span><br><span class="line">    <span class="keyword">if</span> a[i] &gt;= <span class="string">&#x27;A&#x27;</span> <span class="keyword">and</span> a[i] &lt;= <span class="string">&#x27;Z&#x27;</span>:</span><br><span class="line">        b += <span class="built_in">chr</span>(<span class="built_in">ord</span>(a[i]) + <span class="number">32</span>)</span><br><span class="line">    <span class="keyword">if</span> a[i] &gt;= <span class="string">&#x27;a&#x27;</span> <span class="keyword">and</span> a[i] &lt;= <span class="string">&#x27;z&#x27;</span>:</span><br><span class="line">        b += <span class="built_in">chr</span>(<span class="built_in">ord</span>(a[i]) - <span class="number">32</span>)</span><br><span class="line">    <span class="keyword">if</span> a[i] &lt;= <span class="string">&#x27;9&#x27;</span> <span class="keyword">and</span> a[i] &gt;= <span class="string">&#x27;0&#x27;</span>:</span><br><span class="line">        b += a[i]</span><br><span class="line"><span class="built_in">print</span>(b)</span><br><span class="line"></span><br><span class="line">v1 = <span class="string">&#x27;&#x27;</span></span><br><span class="line">result = <span class="number">6</span></span><br><span class="line">part_base64 = <span class="string">&#x27;ABCDEFGHIJKLMNO&#x27;</span>  <span class="comment"># byte_40E0A0</span></span><br><span class="line">base64 = <span class="string">&#x27;KLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/&#x27;</span>  <span class="comment"># byte_40E0AA</span></span><br><span class="line">base1 = <span class="built_in">list</span>(part_base64)</span><br><span class="line">base2 = <span class="built_in">list</span>(base64)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(result, <span class="number">15</span>):</span><br><span class="line">    v1 = base2[result]</span><br><span class="line">    base2[result] = base1[result]</span><br><span class="line">    base1[result] = v1</span><br><span class="line">    result += <span class="number">1</span></span><br><span class="line">a = <span class="string">&#x27;&#x27;</span>.join(base1 + base2[<span class="number">5</span>:])</span><br><span class="line"><span class="built_in">print</span>(a)</span><br><span class="line"></span><br></pre></td></tr></table></figure><p>跑出来的结果如下，上面是大小写互换后的密文，下面是新表</p><img src="/2022/04/25/usualCrypt/7.png" class><p>最后我们再用一个脚本把新的base64编码表放进去，再来解码这个密文就可以得到flag啦~</p><p>得到<strong>flag{bAse64_h2s_a_Surprise}</strong></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> reverse </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> wp </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>如何patch花指令</title>
       <link href="/2022/04/17/%E5%A6%82%E4%BD%95patch%E8%8A%B1%E6%8C%87%E4%BB%A4/"/>
       <url>/2022/04/17/%E5%A6%82%E4%BD%95patch%E8%8A%B1%E6%8C%87%E4%BB%A4/</url>
