@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>羊城杯2020easyre</title>
+      <link href="/2022/05/05/%E7%BE%8A%E5%9F%8E%E6%9D%AF2020easyre/"/>
+      <url>/2022/05/05/%E7%BE%8A%E5%9F%8E%E6%9D%AF2020easyre/</url>
+      
+        <content type="html"><![CDATA[<h1 id="主函数">主函数</h1><img src="/2022/05/05/%E7%BE%8A%E5%9F%8E%E6%9D%AF2020easyre/1.png" class><p>思路很好理解，将输入的flag进行三次encode然后和Str2对比，一致则正确，我们分别看一下三个encode的作用</p><h1 id="encode_one">encode_one</h1><img src="/2022/05/05/%E7%BE%8A%E5%9F%8E%E6%9D%AF2020easyre/2.png" class><img src="/2022/05/05/%E7%BE%8A%E5%9F%8E%E6%9D%AF2020easyre/3.png" class><p>在encode_one中有一个alphabet，其实就是编码表，很明显就是base64哈哈哈，所以这一个函数的作用就是给输入的flag进行一次base64编码</p><h1 id="encode_two">encode_two</h1><img src="/2022/05/05/%E7%BE%8A%E5%9F%8E%E6%9D%AF2020easyre/4.png" class><p>这一步是将base64编码后的flag进行一次分组，strncpy函数的作用，以第一个为例，是将编码后的flag的26位开始数13个复制到a3，也就是26到39，以此类推就是0-13，39-52，13-26</p><h1 id="encode_three">encode_three</h1><img src="/2022/05/05/%E7%BE%8A%E5%9F%8E%E6%9D%AF2020easyre/5.png" class><p>这一步是将分组完后的flag在进行一次算法加密，其实这就是凯撒加密，但比凯撒多了一步即0-9几个数字也进行了变化，48-57就是0-9的ASCII码</p><h1 id="总体思路">总体思路</h1><p>程序将我们输入的flag进行一次base64编码后，再13个13个为一组进行一次调换，然后在进行一次特殊的凯撒加密，最后在与Str2进行对比，Str2就是进行了3次加密过后的结果，理清楚思路之后，我们反着来写个脚本就可以得到最初的flag了~</p><h1 id="脚本">脚本</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> base64</span><br><span class="line">a = <span class="string">&quot;EmBmP5Pmn7QcPU4gLYKv5QcMmB3PWHcP5YkPq3=cT6QckkPckoRG&quot;</span></span><br><span class="line">flag = <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(a)):</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">ord</span>(a[i]) &gt; <span class="number">47</span> <span class="keyword">and</span> <span class="built_in">ord</span>(a[i]) &lt;= <span class="number">57</span>:</span><br><span class="line">        flag += <span class="built_in">chr</span>((<span class="built_in">ord</span>(a[i]) - <span class="number">48</span> - <span class="number">3</span>) % <span class="number">10</span> + <span class="number">48</span>)  <span class="comment"># 数字也要减三</span></span><br><span class="line">    <span class="keyword">elif</span> <span class="built_in">ord</span>(a[i]) &gt; <span class="number">96</span> <span class="keyword">and</span> <span class="built_in">ord</span>(a[i]) &lt;= <span class="number">122</span>:</span><br><span class="line">        flag += <span class="built_in">chr</span>((<span class="built_in">ord</span>(a[i]) - <span class="number">97</span> - <span class="number">3</span>) % <span class="number">26</span> + <span class="number">97</span>)</span><br><span class="line">    <span class="keyword">elif</span> <span class="built_in">ord</span>(a[i]) &gt; <span class="number">64</span> <span class="keyword">and</span> <span class="built_in">ord</span>(a[i]) &lt;= <span class="number">90</span>:</span><br><span class="line">        flag += <span class="built_in">chr</span>((<span class="built_in">ord</span>(a[i]) - <span class="number">65</span> - <span class="number">3</span>) % <span class="number">26</span> + <span class="number">65</span>)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        flag += a[i]</span><br><span class="line"><span class="built_in">print</span>(flag)</span><br><span class="line">flag = flag[<span class="number">13</span>:<span class="number">26</span>] + flag[<span class="number">39</span>:] + flag[:<span class="number">13</span>] + flag[<span class="number">26</span>:<span class="number">39</span>]</span><br><span class="line"><span class="built_in">print</span>(base64.b64decode(flag))</span><br><span class="line"></span><br></pre></td></tr></table></figure><img src="/2022/05/05/%E7%BE%8A%E5%9F%8E%E6%9D%AF2020easyre/6.png" class><p>得到flag：<strong>GWHT{672cc4778a38e80cb362987341133ea2}</strong></p><p>题目来源：<a href="https://buuoj.cn/challenges">BUUCTF在线评测(buuoj.cn)</a>——[羊城杯 2020]easyre</p>]]></content>
+      
+      
+      <categories>
+          
+          <category> reverse </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> wp </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>findkey</title>
       <link href="/2022/05/01/findkey/"/>
       <url>/2022/05/01/findkey/</url>
