@@ -1,0 +1,214 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>2019红帽杯easyRE | ChengHan's Blog</title><meta name="keywords" content="wp"><meta name="author" content="阿翰"><meta name="copyright" content="阿翰"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="这道题是个elf文件，在Linux环境中打开之后发现什么提示都没有，随便输入一串字符也没提示就直接退出了，于是就还是用ida pro打开，发现没有主函数的窗口，那就检索字符串吧，看到这么一大堆字符串  然后交叉引用一下进入到该字符串所在的函数，这应该就是关键函数了，发现这里有十个一样的函数   就发现这是base64，而且进行了十次，进行十次之后的结果就是刚才那一大堆字符串，然后把它解">
+<meta property="og:type" content="article">
+<meta property="og:title" content="2019红帽杯easyRE">
+<meta property="og:url" content="http://tchdv.cn/2022/05/07/2019%E7%BA%A2%E5%B8%BD%E6%9D%AFeasyRE/index.html">
+<meta property="og:site_name" content="ChengHan&#39;s Blog">
+<meta property="og:description" content="这道题是个elf文件，在Linux环境中打开之后发现什么提示都没有，随便输入一串字符也没提示就直接退出了，于是就还是用ida pro打开，发现没有主函数的窗口，那就检索字符串吧，看到这么一大堆字符串  然后交叉引用一下进入到该字符串所在的函数，这应该就是关键函数了，发现这里有十个一样的函数   就发现这是base64，而且进行了十次，进行十次之后的结果就是刚才那一大堆字符串，然后把它解">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7">
+<meta property="article:published_time" content="2022-05-07T02:52:25.000Z">
+<meta property="article:modified_time" content="2022-05-07T03:48:07.593Z">
+<meta property="article:author" content="阿翰">
+<meta property="article:tag" content="wp">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"><link rel="shortcut icon" href="/img/avatar.png"><link rel="canonical" href="http://tchdv.cn/2022/05/07/2019%E7%BA%A2%E5%B8%BD%E6%9D%AFeasyRE/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '天',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '2019红帽杯easyRE',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: false,
+  postUpdate: '2022-05-07 11:48:07'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/1.css"  media="defer" onload="this.media='all'"><meta name="generator" content="Hexo 6.0.0"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">20</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 目录</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">ChengHan's Blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 主页</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> 目录</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></li><li><a class="site-page child" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></li><li><a class="site-page child" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></li></ul></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">2019红帽杯easyRE</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-05-07T02:52:25.000Z" title="发表于 2022-05-07 10:52:25">2022-05-07</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-05-07T03:48:07.593Z" title="更新于 2022-05-07 11:48:07">2022-05-07</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/reverse/">reverse</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">655</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>2分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="2019红帽杯easyRE"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>这道题是个elf文件，在Linux环境中打开之后发现什么提示都没有，随便输入一串字符也没提示就直接退出了，于是就还是用ida
+pro打开，发现没有主函数的窗口，那就检索字符串吧，看到这么一大堆字符串</p>
+<img src="/2022/05/07/2019%E7%BA%A2%E5%B8%BD%E6%9D%AFeasyRE/1.png" class>
+<p>然后交叉引用一下进入到该字符串所在的函数，这应该就是关键函数了，发现这里有十个一样的函数</p>
+<img src="/2022/05/07/2019%E7%BA%A2%E5%B8%BD%E6%9D%AFeasyRE/2.png" class>
+<img src="/2022/05/07/2019%E7%BA%A2%E5%B8%BD%E6%9D%AFeasyRE/3.png" class>
+<p>就发现这是base64，而且进行了十次，进行十次之后的结果就是刚才那一大堆字符串，然后把它解码十次之后，就...就得到了一个网站https://bbs.pediy.com/thread-254172.htm，然后进去这个网站之后，根本就没有flag</p>
+<p>说明我们思路不对，所以我就返回去看主函数，看到这一部分</p>
+<img src="/2022/05/07/2019%E7%BA%A2%E5%B8%BD%E6%9D%AFeasyRE/4.png" class>
+<p>这里将三个字符串拼到一起，然后还在v[12]和v[13]的末端加了一个127，然后再进行一次异或运算，写了个脚本得到了Info:The
+first four chars are
+`flag`，这应该是一个提示，然后在这里呆了半天也不知道下一步该怎么做，看了大佬的题解提示，在进行完上面的异或和base循环之后，下面又调用了sub_400D35这个函数</p>
+<img src="/2022/05/07/2019%E7%BA%A2%E5%B8%BD%E6%9D%AFeasyRE/5.png" class>
+<p>我们看看这个函数</p>
+<img src="/2022/05/07/2019%E7%BA%A2%E5%B8%BD%E6%9D%AFeasyRE/6.png" class>
+<p>关键部分就是一个if条件语句和一个for循环了，if的括号中的条件，是v4和一个已知数组的异或</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="number">0x40</span>, <span class="number">0x35</span>, <span class="number">0x20</span>, <span class="number">0x56</span>, <span class="number">0x5D</span>, <span class="number">0x18</span>, <span class="number">0x22</span>, <span class="number">0x45</span>, <span class="number">0x17</span>, <span class="number">0x2F</span>, <span class="number">0x24</span>, <span class="number">0x6E</span>, <span class="number">0x62</span>, <span class="number">0x3C</span>, <span class="number">0x27</span>, <span class="number">0x54</span>, <span class="number">0x48</span>, <span class="number">0x6C</span>, <span class="number">0x24</span>, <span class="number">0x6E</span>, <span class="number">0x72</span>, <span class="number">0x3C</span>, <span class="number">0x32</span>, <span class="number">0x45</span>, <span class="number">0x5B</span>]</span><br></pre></td></tr></table></figure>
+<p>也容易看出前四位的异或结果应该就是flag了，然后在下面的for循环中再和v4进行异或，要知道v4我们就再进行一次异或就可以得到，然后就可以进行for循环中的异或了，异或之后的结果应该就是flag了，毕竟前四个结果就是flag嘛，脚本如下</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="number">73</span>, <span class="number">111</span>, <span class="number">100</span>, <span class="number">108</span>, <span class="number">62</span>, <span class="number">81</span>, <span class="number">110</span>, <span class="number">98</span>, <span class="number">40</span>, <span class="number">111</span>, <span class="number">99</span>, <span class="number">121</span>, <span class="number">127</span>, <span class="number">121</span>, <span class="number">46</span>, <span class="number">105</span>, <span class="number">127</span>, <span class="number">100</span>, <span class="number">96</span>, <span class="number">51</span>,</span><br><span class="line">     <span class="number">119</span>, <span class="number">125</span>, <span class="number">119</span>, <span class="number">101</span>, <span class="number">107</span>, <span class="number">57</span>, <span class="number">123</span>, <span class="number">105</span>, <span class="number">121</span>, <span class="number">61</span>, <span class="number">126</span>, <span class="number">121</span>, <span class="number">76</span>, <span class="number">64</span>, <span class="number">69</span>, <span class="number">67</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(a)):</span><br><span class="line">    a[i] = <span class="built_in">chr</span>(a[i] ^ i)</span><br><span class="line">    <span class="built_in">print</span>(a[i], end=<span class="string">&#x27;&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>()</span><br><span class="line"></span><br><span class="line">b = [<span class="number">0x40</span>, <span class="number">0x35</span>, <span class="number">0x20</span>, <span class="number">0x56</span>, <span class="number">0x5D</span>, <span class="number">0x18</span>, <span class="number">0x22</span>, <span class="number">0x45</span>, <span class="number">0x17</span>, <span class="number">0x2F</span>, <span class="number">0x24</span>, <span class="number">0x6E</span>, <span class="number">0x62</span>,</span><br><span class="line">     <span class="number">0x3C</span>, <span class="number">0x27</span>, <span class="number">0x54</span>, <span class="number">0x48</span>, <span class="number">0x6C</span>, <span class="number">0x24</span>, <span class="number">0x6E</span>, <span class="number">0x72</span>, <span class="number">0x3C</span>, <span class="number">0x32</span>, <span class="number">0x45</span>, <span class="number">0x5B</span>]</span><br><span class="line">c = <span class="string">&#x27;flag&#x27;</span></span><br><span class="line">v1 = <span class="string">&#x27;&#x27;</span></span><br><span class="line">flag = <span class="string">&#x27;&#x27;</span></span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(c)):</span><br><span class="line">    v1 += <span class="built_in">chr</span>(b[i] ^ <span class="built_in">ord</span>(c[i]))</span><br><span class="line"><span class="built_in">print</span>(v1)</span><br><span class="line"><span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="built_in">len</span>(b)):</span><br><span class="line">    flag += <span class="built_in">chr</span>(b[i] ^ <span class="built_in">ord</span>(v1[i % <span class="number">4</span>]))</span><br><span class="line"><span class="built_in">print</span>(flag)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<img src="/2022/05/07/2019%E7%BA%A2%E5%B8%BD%E6%9D%AFeasyRE/7.png" class>
+<p>得到<strong>flag{Act1ve_Defen5e_Test}</strong></p>
+<p>题目来源：<a target="_blank" rel="noopener" href="https://buuoj.cn/challenges">BUUCTF在线评测
+(buuoj.cn)</a>——[2019红帽杯]easyRE</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">阿翰</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://tchdv.cn/2022/05/07/2019%E7%BA%A2%E5%B8%BD%E6%9D%AFeasyRE/">http://tchdv.cn/2022/05/07/2019%E7%BA%A2%E5%B8%BD%E6%9D%AFeasyRE/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://tchdv.cn" target="_blank">ChengHan's Blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/wp/">wp</a></div><div class="post_share"></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i> 打赏</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" src="/img/wechat.jpg"/></a><div class="post-qr-code-desc"></div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2022/05/05/%E7%BE%8A%E5%9F%8E%E6%9D%AF2020easyre/"><img class="next-cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">羊城杯2020easyre</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/04/14/2019%E5%8D%8E%E5%8D%97%E5%B8%88%E5%A4%A7CTF%E6%96%B0%E7%94%9F%E8%B5%9Bmaze/" title="2019华南师大CTF新生赛maze"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-04-14</div><div class="title">2019华南师大CTF新生赛maze</div></div></a></div><div><a href="/2022/04/15/2020%E5%8D%8E%E5%8D%97%E5%B8%88%E5%A4%A7CTF%E6%96%B0%E7%94%9F%E8%B5%9Bmaze/" title="2020华南师大CTF新生赛maze"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-04-15</div><div class="title">2020华南师大CTF新生赛maze</div></div></a></div><div><a href="/2022/03/12/CrackRTF/" title="CrackRTF"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-12</div><div class="title">CrackRTF</div></div></a></div><div><a href="/2022/04/03/DASCTF%C3%97SU2022-easyre/" title="DASCTF×SU2022-easyre"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-04-03</div><div class="title">DASCTF×SU2022-easyre</div></div></a></div><div><a href="/2022/03/12/JustRE/" title="JustRE"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-12</div><div class="title">JustRE</div></div></a></div><div><a href="/2022/03/14/Xor/" title="Xor"><img class="cover" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-03-14</div><div class="title">Xor</div></div></a></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">阿翰</div><div class="author-info__description">真正的大师永远怀着一颗学徒的心</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">20</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">4</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/chenghan03"><i class="fab fa-github"></i><span>click there</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">欢迎来到阿翰的博客~</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/05/07/2019%E7%BA%A2%E5%B8%BD%E6%9D%AFeasyRE/" title="2019红帽杯easyRE">2019红帽杯easyRE</a><time datetime="2022-05-07T02:52:25.000Z" title="发表于 2022-05-07 10:52:25">2022-05-07</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/05/05/%E7%BE%8A%E5%9F%8E%E6%9D%AF2020easyre/" title="羊城杯2020easyre">羊城杯2020easyre</a><time datetime="2022-05-05T13:19:22.000Z" title="发表于 2022-05-05 21:19:22">2022-05-05</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/05/01/findkey/" title="findkey">findkey</a><time datetime="2022-05-01T02:30:12.000Z" title="发表于 2022-05-01 10:30:12">2022-05-01</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/04/28/singal/" title="singal">singal</a><time datetime="2022-04-28T14:33:59.000Z" title="发表于 2022-04-28 22:33:59">2022-04-28</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/04/25/usualCrypt/" title="usualCrypt">usualCrypt</a><time datetime="2022-04-25T03:49:10.000Z" title="发表于 2022-04-25 11:49:10">2022-04-25</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 By 阿翰</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">到底啦！！</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">本地搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><script>function panguFn () {
+  if (typeof pangu === 'object') pangu.autoSpacingPage()
+  else {
+    getScript('https://cdn.jsdelivr.net/npm/pangu/dist/browser/pangu.min.js')
+      .then(() => {
+        pangu.autoSpacingPage()
+      })
+  }
+}
+
+function panguInit () {
+  if (false){
+    GLOBAL_CONFIG_SITE.isPost && panguFn()
+  } else {
+    panguFn()
+  }
+}
+
+document.addEventListener('DOMContentLoaded', panguInit)</script><script src="/js/search/local-search.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script></div><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1/dist/click-heart.min.js" async="async" mobile="true"></script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
