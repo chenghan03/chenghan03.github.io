@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>MRCTF2020-PixelShooter</title>
+      <link href="/2022/07/03/MRCTF2020-PixelShooter/"/>
+      <url>/2022/07/03/MRCTF2020-PixelShooter/</url>
+      
+        <content type="html"><![CDATA[<p>这是一道安卓逆向，而且是一个游戏题，可以用模拟器打开玩通关，不过一开始我还是习惯性地用androidkiller打开看java代码，一直找不到关键函数，然后突然想起之前做过类似的题目，这种游戏题一般是基于unity开发的，而且它的核心逻辑位于assets-CSharp.dll，所以我把它里面的Assembly-CSharp.dll文件提取出来之后，再用dnSpy打开，然后找到它的关键函数，但没想到的是flag直接就可以看到......</p><img src="/2022/07/03/MRCTF2020-PixelShooter/1.png" class><p>后面又在网上搜了一下这道题，发现还有一个工具也就是JEB可以来做这类题，然后我就下了一个试试</p><img src="/2022/07/03/MRCTF2020-PixelShooter/2.png" class><p>个人感觉dnSpy更好用哈哈哈哈</p><p>flag：<strong>MRCTF{Unity_1S_Fun_233}</strong></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> reverse </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> wp </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>GXYCTF2019-simpleCPP</title>
       <link href="/2022/07/02/GXYCTF2019-simpleCPP/"/>
       <url>/2022/07/02/GXYCTF2019-simpleCPP/</url>
