@@ -29,31 +29,6 @@
     
     
     <entry>
-      <title>ChampionshipRegistration</title>
-      <link href="/2022/07/05/ChampionshipRegistration/"/>
-      <url>/2022/07/05/ChampionshipRegistration/</url>
-      
-        <content type="html"><![CDATA[<p>拿到题之后发现关键文件是class文件，刚好前几天做过差不多类型的，直接用jeb打开，没想到flag直接就看到了...</p><img src="/2022/07/05/ChampionshipRegistration/1.png" class><p>得到<strong>flag{GoldenTicket2018@flare-on.com}</strong></p>]]></content>
-      
-      
-      <categories>
-          
-          <category> reverse </category>
-          
-      </categories>
-      
-      
-        <tags>
-            
-            <tag> wp </tag>
-            
-        </tags>
-      
-    </entry>
-    
-    
-    
-    <entry>
       <title>firmware</title>
       <link href="/2022/07/05/firmware/"/>
       <url>/2022/07/05/firmware/</url>
