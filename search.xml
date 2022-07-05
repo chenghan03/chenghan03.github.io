@@ -4,11 +4,36 @@
   
     
     <entry>
+      <title>UltimateMinesweeper</title>
+      <link href="/2022/07/05/UltimateMinesweeper/"/>
+      <url>/2022/07/05/UltimateMinesweeper/</url>
+      
+        <content type="html"><![CDATA[<p>这是个游戏题，打开之后就是个扫雷，估计是排完雷就可以显示flag了，然后用dnSpy打开文件之后，感觉这个GetKey是关键函数，因为出现了一个数组，这里估计就是flag了，而且肯定有一些算法在里面，感觉可以通过脚本逆向出来（做完之后看别人的wp原来这里也无法用脚本逆出来，因为少了一个数组的数据）</p><img src="/2022/07/05/UltimateMinesweeper/1.png" class><p>但是在查壳的时候知道了这个程序使用C#写的，是在看不太懂，最多分析个大概的思路，就只能去猜它的意思，所以还是换个思路，就改一下里面的代码，看能不能强制通关之类的，然后我看到了这个函数</p><img src="/2022/07/05/UltimateMinesweeper/2.png" class><p>这里引用了GetKey函数，肯定是个关键点，而且这个if语句里面包含了Application.Exit()函数，这是用来退出程序的函数，估计就是不符合条件了也就是踩雷了就退出程序，所以我就把这两个if语句全删掉了，然后再编译并另存为新的程序，发现真的踩雷也不会挂了，所以就一直无敌</p><p>但是这个真的好难点，我一开始点的时候点累了，感觉有更好的方法，点到一半就关掉了，白点了那么多下好烦啊（后面看别人的wp的时候发现居然有人可以开透视挂，简直不要太爽，比无敌挂好用多了，不用点那么多下）</p><img src="/2022/07/05/UltimateMinesweeper/3.png" class><p>但是后来实在是想不出别的方法了（论精通各种编程语言的重要性，如果能看懂C#肯定会好做些），就还是老实地全点完了，刚点完发现给的答案是个乱码</p><img src="/2022/07/05/UltimateMinesweeper/4.png" class><p>到原来那个没被修改过的程序找到相应的位置才是真的flag</p><img src="/2022/07/05/UltimateMinesweeper/5.png" class><p>得到<strong>flag{Ch3aters_Alw4ys_W1n@flare-on.com}</strong></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> reverse </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> wp </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>ChampionshipRegistration</title>
       <link href="/2022/07/05/ChampionshipRegistration/"/>
       <url>/2022/07/05/ChampionshipRegistration/</url>
       
-        <content type="html"><![CDATA[<p>拿到题之后发现关键文件是class文件，刚好前几天做过差不多类型的，直接用jeb打开，没想到flag直接就看到了...</p><p>得到<strong>flag{GoldenTicket2018@flare-on.com}</strong></p>]]></content>
+        <content type="html"><![CDATA[<p>拿到题之后发现关键文件是class文件，刚好前几天做过差不多类型的，直接用jeb打开，没想到flag直接就看到了...</p><img src="/2022/07/05/ChampionshipRegistration/1.png" class><p>得到<strong>flag{GoldenTicket2018@flare-on.com}</strong></p>]]></content>
       
       
       <categories>
