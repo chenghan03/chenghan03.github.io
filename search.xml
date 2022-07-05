@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>firmware</title>
+      <link href="/2022/07/05/firmware/"/>
+      <url>/2022/07/05/firmware/</url>
+      
+        <content type="html"><![CDATA[<p>这个题刚开始就提示了我们要分析后门程序的服务器和端口，所以我们的目的就是要去找到后门程序，并且拿到服务器和端口，最后再md5加密一下就是我们的flag了。</p><p>在拿到题目之后，发现是个bin文件，上网查了一下，要用binwalk工具去提取里面的文件，</p><img src="/2022/07/05/firmware/1.png" class><p>提取之后发现前面几个文件打开之后什么都没有，也没有所谓的后门文件，就剩一个120200.squashfs文件，这个东西我怎么都打不开，然后查了一下，原来它要用firmware-mod-kit来解压，才能提取里面的文件，把工具装好之后，解压，然后终于找到了一个backdoor文件，这应该就是后门文件了</p><img src="/2022/07/05/firmware/2.png" class><p>然后检查一下这个后门程序，发现还有个upx的壳，那我们就脱壳</p><img src="/2022/07/05/firmware/3.png" class><p>脱壳之后用ida打开，shift+F12搜索字符串，看到一个网址</p><img src="/2022/07/05/firmware/4.png" class><p>这应该就是flag的前一部分了，而剩下的端口应该就是一串数字了，找了一会在这里发现一段可疑代码</p><img src="/2022/07/05/firmware/5.png" class><p>18行-23行是关键代码，根据题目给的提示，flag加密前的形式是(网址:端口)的格式，而这里刚好出现了冒号，并且将冒号后面的数据整型化后赋给v3，所以就是端口的值，这里的话v3=36667应该就是它默认的端口值，所以36667就是我们需要的端口，和前面的网址连起来就是echo.byethost51.com:36667，MD5一下就是我们的flag了</p><img src="/2022/07/05/firmware/6.png" class><p>得到<strong>flag{33a422c45d551ac6e4756f59812a954b}</strong></p>]]></content>
+      
+      
+      <categories>
+          
+          <category> reverse </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> wp </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>MRCTF2020-PixelShooter</title>
       <link href="/2022/07/03/MRCTF2020-PixelShooter/"/>
       <url>/2022/07/03/MRCTF2020-PixelShooter/</url>
