@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>如何脱bang壳</title>
+      <link href="/2022/08/07/%E5%A6%82%E4%BD%95%E8%84%B1bang%E5%A3%B3/"/>
+      <url>/2022/08/07/%E5%A6%82%E4%BD%95%E8%84%B1bang%E5%A3%B3/</url>
+      
+        <content type="html"><![CDATA[<p>今天遇到一个加了壳的安卓题，<a href="https://buuoj.cn/challenges">[网鼎杯2020青龙组]bang</a>，这是我第一次遇见加壳的apk程序，加了bang这个壳，第一次去这种壳所以记录一下，以免以后忘记</p><p>这里首先使用PKID这个工具来查壳，在网上可以搜到，然后就可以看到</p><img src="/2022/08/07/%E5%A6%82%E4%BD%95%E8%84%B1bang%E5%A3%B3/1.png" class><p>然后就要用到<a href="https://github.com/hluwa/FRIDA-DEXDump">frida-dexdeump脚本</a>来脱壳，在使用这个脚本之前，还要在连接安卓系统的条件下使用，在这里还要配置一下frida的环境</p><h3 id="第一步在windows下安装frida模块和frida-tools模块">第一步，在windows下安装frida模块和frida-tools模块</h3><p>先安装frida模块</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install frida</span><br></pre></td></tr></table></figure><p>然后安装frida-tools模块</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pip install frida-tools</span><br></pre></td></tr></table></figure><p><strong>在安装完之后，要将他们所在的路径添加到环境变量中，否则无法使用frida指令</strong></p><h3 id="第二步安卓系统下安装frida-server">第二步，安卓系统下安装frida-server</h3><p>要与安卓系统进行连接，首先要在安卓系统中安装<a href="https://github.com/frida/frida/releases">frida-server</a>，可以看到这里有很多版本</p><img src="/2022/08/07/%E5%A6%82%E4%BD%95%E8%84%B1bang%E5%A3%B3/2.png" class><p>我们要选择与我们刚才在windows下pip安装的frida相对应的版本进行安装，同时还要看你所使用的安卓系统的架构，比如我安装的frida是15.2.2版本的，而且我用的安卓系统是64位的，那我就选择frida-server-15.2.2-android-x86_64.xz，然后我们就要把它安装进安卓系统中</p><h4 id="连接安卓系统">连接安卓系统</h4><p>连接安卓系统需要用到<a href="https://dl.google.com/android/repository/platform-tools_r33.0.2-windows.zip">adb指令</a>，下载解压之后将其路径添加到环境变量中就可以使用了，然后打开cmd，输入下面的命令进行传输</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb push (frida-server在windows中的路径) /data/local/tmp(这个是安卓系统的目标路径)</span><br></pre></td></tr></table></figure><p>输入完之后可能要等个一两分钟才传输完成，完成之后就可以进行连接了，我用的安卓系统是mumu模拟器的，可以在模拟器里面看自己的地址，输入以下命令连接</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">adb connect 127.0.0.1:7555</span><br></pre></td></tr></table></figure><img src="/2022/08/07/%E5%A6%82%E4%BD%95%E8%84%B1bang%E5%A3%B3/4.png" class><p>连接成功</p><p>然后通过以下命令进入frida-server所在目录</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">adb shell</span><br><span class="line">su</span><br><span class="line">cd /data/local/tmp</span><br></pre></td></tr></table></figure><p>先给文件权限</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod 777 frida-server-15.2.2(文件名)</span><br></pre></td></tr></table></figure><p>再打开</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./frida-server-15.2.2</span><br></pre></td></tr></table></figure><p>然后我们再打开一个新的cmd输入</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">frida-ps -U</span><br></pre></td></tr></table></figure><p>以此来确认该程序有没有打开成功</p><img src="/2022/08/07/%E5%A6%82%E4%BD%95%E8%84%B1bang%E5%A3%B3/3.png" class><p>这就说明打开成功了</p><h3 id="第三步脚本脱壳">第三步，脚本脱壳</h3><p>在安卓端打开frida-server之后，我们再在安卓端把要脱壳的程序给打开，就可以在windows下进行脱壳了，我们在刚刚下好的frida-dexdump目录下打开cmd，输入下面的命令</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">frida-dexdump -FU</span><br></pre></td></tr></table></figure><img src="/2022/08/07/%E5%A6%82%E4%BD%95%E8%84%B1bang%E5%A3%B3/5.png" class><p>然后在此目录下会出现一个跟被脱壳程序同名的文件，里面有两个</p><img src="/2022/08/07/%E5%A6%82%E4%BD%95%E8%84%B1bang%E5%A3%B3/6.png" class><p>把第一个文件拿到jeb中打开，可以直接看到flag</p><img src="/2022/08/07/%E5%A6%82%E4%BD%95%E8%84%B1bang%E5%A3%B3/7.png" class><p>得到<strong>flag{borring_things}</strong></p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> newknow </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>DASCTF2022-7月-隐秘的角落</title>
       <link href="/2022/07/31/DASCTF2022-7%E6%9C%88-%E9%9A%90%E8%97%8F%E7%9A%84%E8%A7%92%E8%90%BD/"/>
       <url>/2022/07/31/DASCTF2022-7%E6%9C%88-%E9%9A%90%E8%97%8F%E7%9A%84%E8%A7%92%E8%90%BD/</url>
