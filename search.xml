@@ -4,6 +4,25 @@
   
     
     <entry>
+      <title>ESP定律——脱壳</title>
+      <link href="/2022/09/01/ESP%E5%AE%9A%E5%BE%8B%E2%80%94%E2%80%94%E8%84%B1%E5%A3%B3/"/>
+      <url>/2022/09/01/ESP%E5%AE%9A%E5%BE%8B%E2%80%94%E2%80%94%E8%84%B1%E5%A3%B3/</url>
+      
+        <content type="html"><![CDATA[<h1 id="步骤">步骤</h1><p>1、刚进去就F8，然后观察右上角寄存器中ESP也没有突变成红色，如果变成红色就进行接下来的步骤</p><p>2、在地下的命令行输入指令dd XXXXXXX或hrXXXXXXX(即当前ESP的地址)，然后回车</p><p>3、选中刚刚下断点的地址，右键选择断点——&gt;硬件访问——&gt;word断点，英文breakpoint——&gt;hardware，onaccess——&gt;word</p><p>4、F9运行到跳转出，按下F8到达程序OEP(程序入口点)</p>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> newknow </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>NepCTF2022</title>
       <link href="/2022/08/11/NepCTF2022/"/>
       <url>/2022/08/11/NepCTF2022/</url>
