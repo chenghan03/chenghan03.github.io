@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>sql注入</title>
+      <link href="/2024/03/28/sql%E6%B3%A8%E5%85%A5/"/>
+      <url>/2024/03/28/sql%E6%B3%A8%E5%85%A5/</url>
+      
+        <content type="html"><![CDATA[<h1 id="提交方式"><a class="markdownIt-Anchor" href="#提交方式">#</a> 提交方式</h1><h1 id="数据类型"><a class="markdownIt-Anchor" href="#数据类型">#</a> 数据类型</h1><h1 id="查询方法"><a class="markdownIt-Anchor" href="#查询方法">#</a> 查询方法</h1><h1 id="回显-盲注"><a class="markdownIt-Anchor" href="#回显-盲注">#</a> 回显、盲注</h1><h1 id="数据库类型"><a class="markdownIt-Anchor" href="#数据库类型">#</a> 数据库类型</h1><h1 id="扩展"><a class="markdownIt-Anchor" href="#扩展">#</a> 扩展</h1>]]></content>
+      
+      
+      <categories>
+          
+          <category> 笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> sql注入 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>sql注入之waf绕过</title>
       <link href="/2024/03/27/sql%E6%B3%A8%E5%85%A5%E4%B9%8Bwaf%E7%BB%95%E8%BF%87/"/>
       <url>/2024/03/27/sql%E6%B3%A8%E5%85%A5%E4%B9%8Bwaf%E7%BB%95%E8%BF%87/</url>
