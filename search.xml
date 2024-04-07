@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>uploadlabs笔记</title>
+      <link href="/2024/04/07/uploadlabs%E7%AC%94%E8%AE%B0/"/>
+      <url>/2024/04/07/uploadlabs%E7%AC%94%E8%AE%B0/</url>
+      
+        <content type="html"><![CDATA[<h1 id="第14关-图片马"><a class="markdownIt-Anchor" href="#第14关-图片马">#</a> 第 14 关 - 图片马</h1><p>第 14 关的要求是上传图片马，也就是用图片加一段 php 代码，在网站有这个包含漏洞的情况下才可以解析这个木马</p><p>首先要制作一个图片马，可以直接用文本文档格式编辑，在图片后面加一段 php 代码，但是需要 16 进制编写。还可以用 cmd 生成，语句如下</p><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">copy a.png /b + a.php /a webshell.png</span><br></pre></td></tr></table></figure><img src="/2024/04/07/uploadlabs%E7%AC%94%E8%AE%B0/1.png" class><p>在这个生成文件上传成功之后检测一下是否能成功运行，题目已经给了文件包含漏洞访问</p><img src="/2024/04/07/uploadlabs%E7%AC%94%E8%AE%B0/2.png" class><p>找到文件上传之后的所在路径和文件名，用 bp 抓包看一下</p><img src="/2024/04/07/uploadlabs%E7%AC%94%E8%AE%B0/3.png" class><p>然后在文件包含漏洞页面访问</p><img src="/2024/04/07/uploadlabs%E7%AC%94%E8%AE%B0/4.png" class><h1 id="第15关-getimagesize"><a class="markdownIt-Anchor" href="#第15关-getimagesize">#</a> 第 15 关 - getimagesize ()</h1><p>这关和上一关只有一个区别，是一个 getimagesize 函数，这个函数会读取文件的 16 进制头，看是不是符合正常的图片的文件头，看看源码</p><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">isImage</span>(<span class="params"><span class="variable">$filename</span></span>)</span>&#123;</span><br><span class="line">    <span class="variable">$types</span> = <span class="string">&#x27;.jpeg|.png|.gif&#x27;</span>;</span><br><span class="line">    <span class="keyword">if</span>(<span class="title function_ invoke__">file_exists</span>(<span class="variable">$filename</span>))&#123;</span><br><span class="line">        <span class="variable">$info</span> = <span class="title function_ invoke__">getimagesize</span>(<span class="variable">$filename</span>);</span><br><span class="line">        <span class="variable">$ext</span> = <span class="title function_ invoke__">image_type_to_extension</span>(<span class="variable">$info</span>[<span class="number">2</span>]);</span><br><span class="line">        <span class="keyword">if</span>(<span class="title function_ invoke__">stripos</span>(<span class="variable">$types</span>,<span class="variable">$ext</span>)&gt;=<span class="number">0</span>)&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="variable">$ext</span>;</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;<span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>所以只要文件头符合上述三个文件类型即可，其他步骤和 14 关一致</p><h1 id="第16关-exif_imagetype"><a class="markdownIt-Anchor" href="#第16关-exif_imagetype">#</a> 第 16 关 - exif_imagetype ()</h1><p>16 关和 14、15 关的思路依旧是一样的，但是这里的区别是 exif_imagetype，其功能是检测 16 进制文件头并检测其后缀名，功能和 getimagesize 一样，但是速度比其要快得多，在 php 扩展中可以打开这个功能</p><img src="/2024/04/07/uploadlabs%E7%AC%94%E8%AE%B0/5.png" class>]]></content>
+      
+      
+      <categories>
+          
+          <category> 笔记 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> 文件上传 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>文件上传漏洞</title>
       <link href="/2024/04/05/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/"/>
       <url>/2024/04/05/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/</url>
